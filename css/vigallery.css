@@ -1,0 +1,220 @@
+/* 
+Plugin  : Vigallery 
+Author  : vivi@closelycoded.net
+By      : http://www.closelycoded.com
+*/
+
+.vg_wrapper{
+    width: 470px;
+    height: 470px;
+    position: relative;
+}
+.vg_wrapper ul{
+    list-style: none;
+    margin:0;
+    padding:0;
+    position:relative;
+    top:0;
+    left:0;
+    text-align: center;
+}
+.vg_wrapper li{
+    width: auto;
+    height: 80px;
+}
+.vg_wrapper li img{
+    width: auto;
+    height: 80px;
+    max-width: 80px;
+    border: #ffffff solid 1px;
+}
+.vg_wrapper li img:hover{border: #ccc solid 1px;}
+.vg_wrapper li.active img{border: #000 solid 1px;}
+
+.vg_wrapper .vg_large_picture{
+    width: 380px;
+    height: auto;
+    display: none;
+    overflow: hidden;
+    position: relative;
+    float: left;
+}
+.vg_wrapper .vg_large_picture img#large_image{
+    width: 380px;
+    height: auto;
+}
+.vg_wrapper .show_title{
+    width: 900px;
+    display: block;
+    overflow: hidden;
+    position: relative;
+    top: -100px;
+}
+.vg_wrapper .vg_horizontal{
+    float:left;
+    margin-right: 22px;
+}
+.vg_wrapper .vg_vertical{
+    margin-bottom: 10px;
+}
+.vg_wrapper .vg_list_wrapper{
+    overflow: hidden;
+    position: relative;
+    float: left;
+    height: 90px;
+    width: 90px;
+    top: 0px;
+    height: 442px !important;
+}
+.vg_wrapper .disabled a.vg_next, .vg_wrapper .disabled a.vg_prev{
+    opacity:0.1;
+}
+.vg_wrapper .zoom{
+    cursor: crosshair;
+}
+.vg_wrapper #zoom_image{
+    position: absolute;
+    top:0;
+    left:0;
+    display: none;
+}
+.vg_prev_nav, .vg_next_nav{
+    
+}
+.vg_prev{
+    background: url('../../images/prev.png') no-repeat; 
+    top: 0;
+    left: 415px;
+}
+.vg_next{
+    background: url('../../images/next.png') no-repeat; 
+    top: 467px;
+    left: 415px;
+}
+.vg_next, .vg_prev{
+    display: inline-block;
+    text-indent: -999em;
+    width: 20px;
+    height: 7px;
+    display: inline-block;
+    position: absolute;
+    opacity:1;
+}
+.vg_wrapper .vg_outer_zoom{
+    position: absolute;
+    width: 340px;
+    height: 500px;
+    z-index: 10;
+    left: 460px;
+    display:hidden;
+    overflow: hidden;
+}
+.vg_wrapper .vg_zoomlens{
+    display:none;
+    position: absolute;
+    width:170px;
+    height: 250px;
+    z-index: 10;
+    background: #fff;
+    opacity:0.4;
+    top: 0;
+    left: 0;
+}
+
+/*-----------------------------elevate zoom-----------------------------------*/
+.inner_control{
+    width: 625px;
+    height: 805px;
+    position: relative;
+}
+.inner_control .vg_next_pic, .inner_control .vg_prev_pic{
+    text-indent: -999em;
+    width: 40px;
+    height: 38px;
+    display: inline-block;
+    position: absolute;
+    z-index: 10000;
+}
+.inner_control .vg_prev_pic{
+    background: url('../../images/prev_nivo.png') no-repeat;
+    top: 390px;
+    left: 0;
+}
+.inner_control .vg_next_pic{
+    background: url('../../images/next_nivo.png') no-repeat;
+    top: 390px;
+    right: 0;
+}
+/*----------------------------lookbook-----------------------------------------*/
+.lookbook_cat{}
+#lookbook .vg_wrapper{
+    width: 940px;
+    height: auto;
+}
+#lookbook .vg_wrapper .vg_large_picture{
+    width: 940px;
+    height: auto;
+    top: 0;
+    box-shadow: none;
+    border: none;
+    padding: 0;
+}
+#lookbook .vg_wrapper .vg_large_picture img#large_image{
+    width: 940px;
+    height: auto;
+}
+#lookbook .vg_wrapper .show_title{
+    width: 100%;
+    text-align: left;
+    top: 452px;
+    font-family: "Raleway";
+    text-transform: uppercase;
+    font-size: 13px;
+    padding: 0 20px;
+}
+#lookbook .vg_wrapper .vg_list_wrapper{
+    margin-top: 30px;
+    height: 190px !important;
+    top: 0;
+    margin: 30px 5px;
+}
+#lookbook .vg_wrapper li img{
+    width: 170px;
+    height: auto;
+    border: none;
+    max-width: 170px;
+}
+#lookbook .inner_control .vg_prev_pic{
+    top: 200px;
+    left: -100px;
+}
+#lookbook .inner_control .vg_next_pic{
+    top:200px;
+    right:-100px;
+}
+#lookbook .inner_control{
+    width: 970px;
+    height: auto;
+}
+#lookbook .vg_wrapper li{
+    width: 170px;
+    height: auto;
+    border-bottom: #ffffff solid 2px;
+    margin-right: 20px;
+}
+#lookbook .vg_wrapper li.active, #lookbook .vg_wrapper li:hover{opacity:0.6;}
+#lookbook .vg_next, #lookbook .vg_prev{display: none;} 
+#lookbook .vg_wrapper li.last{margin-right: 0;}
+@media screen and (max-width:970px) {
+    #lookbook .vg_wrapper,#lookbook .vg_wrapper .vg_large_picture,#lookbook .vg_wrapper .vg_large_picture img#large_image{
+        width:100%;
+    }
+    .vg_list_wrapper{
+        top:17px !important;
+    }
+}
+@media (max-width:480px) {
+    .zoomContainer{
+        display: none;
+    }
+}
