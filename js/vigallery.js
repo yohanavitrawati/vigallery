@@ -1,14 +1,6 @@
 /*--Gallery by vivi@closelycoded.net--
  version 1.1
-note:
-- bug fix : zoom
-- bug fix : large image 
-- add hyperlink
-- show title 
-- remove image effect to css
-- click large image to next image - bug fixed
-- bug fix : set position 
- * */
+*/
 
 (function($){
     $.fn.ViGallery = function(options){
@@ -21,8 +13,8 @@ note:
             arrow : true,                       //using arrow or not, value 'true' or 'false'
             scroll : 'horizontal',              //horizontal, vertical
             speed : 1000,                       //speed of animation
-            hyperlink : false,
-            link_next_image : false,
+            hyperlink : false,                  //set hyperlink on large image
+            link_next_image : false,            
             show_title : false,
             hoverpause : true,
             pause : 5000,
@@ -36,7 +28,7 @@ note:
         var objId = $(this).attr('id');
         var toTb = obj.children('li').length;
         
-        //gallery wrapper
+        /*-----------------gallery wrapper--------------*/
         if($("#"+objId+"_wrap").length <= 0){
             obj.wrap('<div class="vg_wrapper" id="'+objId+'_wrap"></div>');
         }
@@ -236,109 +228,111 @@ note:
                 $('#'+objId+'_wrap').append('<div class="vg_large_picture"></div>');
             }
         }
-        var large_image = obj.find('li:first').children().attr('data-full');
-        var zoom_image = obj.find('li:first').children().attr('data-zoom');
+        var largePic = obj.find('li:first').children().attr('data-full');
+        var zoomPic = obj.find('li:first').children().attr('data-zoom');
+        var findLarge = $('#'+objId+'_wrap').find('.large_image');
         
         if(options.hyperlink){
             var link = obj.find('li:first').children().attr('href');
-            var next_id = '';
+            var nextId = '';
             if(options.link_next_image){
-                next_id = 'id="to_next"';
+                nextId = 'id="to_next"';
             }
-            if($('#'+objId+'_wrap').find('#large_image').size() <= 0){
-                obj.parents('.vg_wrapper').find('.vg_large_picture').append('<a href="'+link+'" '+next_id+'><img src="'+large_image+'" id="large_image_'+objId+'" alt="large_image" class="idx_0 large_image"/></a>');
+            if(findLarge.size() <= 0){
+                vglargePic.append('<a href="'+link+'" '+nextId+'><img src="'+largePic+'" id="large_image_'+objId+'" alt="large_image" class="idx_0 large_image"/></a>');
             }
         }else{
             if(options.link_next_image){
-                if($('#'+objId+'_wrap').find('#large_image').size() <= 0){
-                    obj.parents('.vg_wrapper').find('.vg_large_picture').append('<a href="/" id="to_next"><img src="'+large_image+'" id="large_image_'+objId+'" alt="large_image" class="idx_0 large_image"/></a>');
+                if(findLarge.size() <= 0){
+                    vglargePic.append('<a href="/" id="to_next"><img src="'+largePic+'" id="large_image_'+objId+'" alt="large_image" class="idx_0 large_image"/></a>');
                 }
             }else{
-                if($('#'+objId+'_wrap').find('#large_image').size() <= 0){
-                    obj.parents('.vg_wrapper').find('.vg_large_picture').append('<img src="'+large_image+'" id="large_image_'+objId+'" alt="large_image" class="idx_0 large_image"/>');
+                if(findLarge.size() <= 0){
+                    vglargePic.append('<img src="'+largePic+'" id="large_image_'+objId+'" alt="large_image" class="idx_0 large_image"/>');
                 }
             } 
         }
-        obj.parents('.vg_wrapper').find('.vg_large_picture').fadeIn('slow');
+        vglargePic.fadeIn('slow');
         
         
-        //default show title
+        //default if show image title
         if(options.show_title){
             if(options.large_picture_position == 'top'){
                 obj.parents('.vg_wrapper').prepend('<div class="show_title"></div>');
             }else{
                 obj.parents('.vg_wrapper').append('<div class="show_title"></div>');
             }
-            var title_photo = obj.find('li:first').find('img').attr('alt');
+            var titlePic = obj.find('li:first').find('img').attr('alt');
+            var findShowTitle = obj.parents('.vg_wrapper').find('.show_title');
             if(options.hyperlink){
                 if(link != ""){
-                    obj.parents('.vg_wrapper').find('.show_title').html('<a href="'+link+'">'+title_photo+'</a>');
+                    findShowTitle.html('<a href="'+link+'">'+titlePic+'</a>');
                 }else{
-                    obj.parents('.vg_wrapper').find('.show_title').html(title_photo);
+                    findShowTitle.html(titlePic);
                 }
             }else{
-                obj.parents('.vg_wrapper').find('.show_title').html(title_photo);
+                findShowTitle.html(titlePic);
             }
-            obj.parents('.vg_wrapper').find('.show_title').fadeIn('slow');
+            findShowTitle.fadeIn('slow');
         }     
         
         //thumbnail click to large pic
         obj.find('a').on("click",function(e){
             e.preventDefault();
-            var largePic = $(this).attr('data-full');
-            var zoom_image = $(this).attr('data-zoom');
-            var this_class = $(this).parent('li').attr('class');
+            largePic = $(this).attr('data-full');
+            zoomPic = $(this).attr('data-zoom');
+            var tnClass = $(this).parent('li').attr('class');
             obj.find('li').removeClass('active');
             $(this).parent('li').addClass('active');
-            var split_class = this_class.split(" ");
-            var idx = split_class[0].replace("idx_","");
+            var splitClass = tnClass.split(" ");
+            var idx = splitClass[0].replace("idx_","");
             if(options.hyperlink){
                 var link_tn = $(this).attr('href');
             }
             if(options.show_title){  
-                var title_photo_tn = $(this).find('img').attr('alt');
+                var titlePicTn = $(this).find('img').attr('alt');
                 obj.parents('.vg_wrapper').find('.show_title').fadeOut('slow', function(){
                     obj.parents('.vg_wrapper').find('.show_title').empty();
                     if(options.hyperlink){
                         if(link_tn != ""){
-                            obj.parents('.vg_wrapper').find('.show_title').html('<a href="'+link_tn+'">'+title_photo_tn+'</a>');
+                            findShowTitle.html('<a href="'+link_tn+'">'+titlePicTn+'</a>');
                         }else{
-                            obj.parents('.vg_wrapper').find('.show_title').html(title_photo_tn);
+                            findShowTitle.html(titlePicTn);
                         }
                     }else{
-                        obj.parents('.vg_wrapper').find('.show_title').html(title_photo_tn);
+                        findShowTitle.html(titlePicTn);
                     }
-                    obj.parents('.vg_wrapper').find('.show_title').fadeIn('slow');
+                    findShowTitle.fadeIn('slow');
                 });   
             }
             
-            obj.parents('.vg_wrapper').find('.vg_large_picture').fadeOut('slow',function(){
+            vglargePic.fadeOut('slow',function(){
                 obj.parents('.vg_wrapper').find('.large_image').detach();
                 if(link_tn !="" && link_tn != undefined){
                     if(options.link_next_image){
                         obj.parents('.vg_wrapper').find('#to_next').detach();
                     }
                     if($('#'+objId+'wrap').find('.large_image').size <= 0){
-                        obj.parents('.vg_wrapper').find('.vg_large_picture').append('<a href="'+link_tn+'" '+next_id+'><img src="'+largePic+'" id="large_image_'+objId+'" alt="large_image" class="idx_'+idx+' large_image" /></a>'); 
+                        vglargePic.append('<a href="'+link_tn+'" '+nextId+'><img src="'+largePic+'" id="large_image_'+objId+'" alt="large_image" class="idx_'+idx+' large_image" /></a>'); 
                     }
                     
                 } else{
                     if(options.link_next_image){
                         if($('#'+objId+'wrap').find('.large_image').size <= 0){
-                            obj.parents('.vg_wrapper').find('.vg_large_picture').append('<a href="/" id="to_next"><img src="'+largePic+'" id="large_image_'+objId+'" alt="large_image" class="idx_'+idx+' large_image" /></a>'); 
+                            vglargePic.append('<a href="/" id="to_next"><img src="'+largePic+'" id="large_image_'+objId+'" alt="large_image" class="idx_'+idx+' large_image" /></a>'); 
                         }
                     }else{
                         if($('#'+objId+'wrap').find('.large_image').size <= 0){
-                            obj.parents('.vg_wrapper').find('.vg_large_picture').append('<img src="'+largePic+'" id="large_image_'+objId+'" alt="large_image" class="idx_'+idx+'" />'); 
+                            vglargePic.append('<img src="'+largePic+'" id="large_image_'+objId+'" alt="large_image" class="idx_'+idx+'" />'); 
                         }
                     }  
                 }
-                obj.parents('.vg_wrapper').find('.vg_large_picture').fadeIn('slow',function(){
+                vglargePic.fadeIn('slow',function(){
                     if(options.zoom){
                         if(options.zoomtype == "inner"){
-                            innerZoom(largePic, zoom_image, idx);
+                            innerZoom(largePic, zoomPic, idx);
                         }else if(options.zoomtype == "outer"){
-                            outerZoom(largePic, zoom_image, idx);
+                            outerZoom(largePic, zoomPic, idx);
                         }
                     }
                 }); 
@@ -369,7 +363,7 @@ note:
         //arrow next image
         if(options.arrow_next_image){
             if ($('#'+objId+'_wrap').find('.inner_control').size() <= 0){
-                obj.parents('.vg_wrapper').find('.vg_large_picture').append('<div class="inner_control"></div>');
+                vglargePic.append('<div class="inner_control"></div>');
                 obj.parents('.vg_wrapper').find('.inner_control').append('<a href="/" class="vg_prev_pic_'+objId+'">Prev</a><a href="/" class="vg_next_pic">Next</a>');
             }
             $('body').on("click","a.vg_next_pic",function(e){
@@ -404,12 +398,13 @@ note:
         }
         
         //inner zoom function with elevate zoom
-          var innerZoom = function(large_image, zoom_image, class_image) {
-            $('#'+objId+'_wrap').find('.large_image').detach();
-            if($('#'+objId+'_wrap').find('.large_image').size() <= 0){
-                obj.parents('.vg_wrapper').find('.vg_large_picture').append('<img src="'+large_image+'" data-zoom-image="'+zoom_image+'" id="large_image_'+objId+'" class="idx_'+class_image+' large_image" alt="large_image" />');
+          var innerZoom = function(largePic, zoomPic, class_image) {
+            findLarge.detach();
+            if(findLarge.size() <= 0){
+                vglargePic.append('<img src="'+largePic+'" data-zoom-image="'+zoomPic+'" id="large_image_'+objId+'" class="idx_'+class_image+' large_image" alt="large_image" />');
             }
-            obj.parents('.vg_wrapper').find(".large_image").elevateZoom({
+            
+            findLarge.elevateZoom({
                 zoomType: "inner",
                 cursor: "crosshair",
                 zoomWindowWidth:300, 
@@ -418,12 +413,12 @@ note:
           }
           
           //outer zoom function with elevate zoom
-        var outerZoom = function(large_image, zoom_image, class_image){ 
-            $('#'+objId+'_wrap').find('.large_image').detach();
-            if($('#'+objId+'_wrap').find('.large_image').size() <= 0){
-                obj.parents('.vg_wrapper').find('.vg_large_picture').append('<img src="'+large_image+'" data-zoom-image="'+zoom_image+'" id="large_image_'+objId+'" class="idx_'+class_image+' large_image" alt="large_image" />');
+        var outerZoom = function(largePic, zoomPic, class_image){ 
+            findLarge.detach();
+            if(findLarge.size() <= 0){
+                vglargePic.append('<img src="'+largePic+'" data-zoom-image="'+zoomPic+'" id="large_image_'+objId+'" class="idx_'+class_image+' large_image" alt="large_image" />');
             }
-            obj.parents('.vg_wrapper').find(".large_image").elevateZoom({
+            findLarge.elevateZoom({
                 zoomWindowWidth:340,
                 zoomWindowHeight:500,
                 borderSize: 0, 
@@ -431,12 +426,12 @@ note:
             });
           }
           
-          //zoom hovering
+          //zoom hovering for first image
         if(options.zoom){
             if(options.zoomtype == "inner"){
-                innerZoom(large_image, zoom_image, 0);
+                innerZoom(largePic, zoomPic, 0);
             }else if(options.zoomtype == "outer"){
-                outerZoom(large_image, zoom_image, 0);
+                outerZoom(largePic, zoomPic, 0);
             }
          }
         
