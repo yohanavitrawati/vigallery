@@ -163,17 +163,18 @@
         
         //default nav before setPosition
         var lastPost = Math.ceil(toTb / options.thumbnail);
-        var nextNav = obj.parents('.vg_wrapper').find('.vg_next_nav');
-        var prevNav = obj.parents('.vg_wrapper').find('.vg_next_nav');
-            
+        
+        var nextNav = parWrap.find('.vg_next_nav');
+        var prevNav = parWrap.find('.vg_prev_nav');
+  
         prevNav.addClass('disabled');
         if(lastPost <= 1){
             nextNav.addClass('disabled').removeClass('active');
         }else{
-            prevNav.removeClass('disabled').addClass('active');
+            nextNav.removeClass('disabled').addClass('active');
         }
         
-        //--------------------check position--------------------//
+        //--------------------check position for thumbnail arrow--------------------//
         function setPosition(){
             var position = obj.position();
             
@@ -184,7 +185,7 @@
                 var leftPost = parseInt(obj.css('left'));
                 var newUlWh = obj.width();
                 var leftRm = (newUlWh - (parseInt(obj.css('left')) * -1)) - lastMarg;
-                
+
                 if(wrapWh >= leftRm){
                     nextNav.addClass('disabled').removeClass('active');
                     prevNav.removeClass('disabled').addClass('active');
@@ -200,6 +201,7 @@
                 var topPost = parseInt(obj.css('top'));
                 var newUlHt = obj.height();
                 var topRm = (newUlHt - (parseInt(obj.css('top')) * -1)) - lastMarg;
+
                 if(wrapHt >= topRm){
                     nextNav.removeClass('active').addClass('disabled');
                     prevNav.removeClass('disabled').addClass('active');
@@ -208,26 +210,26 @@
                     prevNav.removeClass('disabled').addClass('active');
                 }
                 if(topPost == 0){
-                    nextNav.removeClass('active').addClass('disabled');
-                    prevNav.removeClass('disabled').addClass('active');
+                    nextNav.removeClass('disabled').addClass('active');
+                    prevNav.removeClass('active').addClass('disabled');
                 }
             }
             
         }
         
         //------------default display large picture-------------------//
-        var vglargePic = $('#'+objId+'_wrap').find('.vg_large_picture');
         
+        var vglargePic = $('#'+objId+'_wrap').find('.vg_large_picture');
         //if large picture doesn't exist create before or after thumbnail list
-        if(options.large_picture_position == 'top'){
-            if(vglargePic.size() <= 0 ){
+        if(vglargePic.size() <= 0 ){
+            if(options.large_picture_position == 'top'){
                 $('#'+objId+'_wrap').prepend('<div class="vg_large_picture"></div>');
-            }
-        }else{
-            if(vglargePic.size() <= 0 ){
+            }else{
                 $('#'+objId+'_wrap').append('<div class="vg_large_picture"></div>');
             }
         }
+
+        vglargePic = $('#'+objId+'_wrap').children('.vg_large_picture');
         var largePic = obj.find('li:first').children().attr('data-full');
         var zoomPic = obj.find('li:first').children().attr('data-zoom');
         var findLarge = $('#'+objId+'_wrap').find('.large_image');
@@ -256,14 +258,15 @@
         
         
         //default if show image title
+        var titlePic = obj.find('li:first').find('img').attr('alt');
+        var findShowTitle = obj.parents('.vg_wrapper').find('.show_title');
         if(options.show_title){
             if(options.large_picture_position == 'top'){
                 obj.parents('.vg_wrapper').prepend('<div class="show_title"></div>');
             }else{
                 obj.parents('.vg_wrapper').append('<div class="show_title"></div>');
             }
-            var titlePic = obj.find('li:first').find('img').attr('alt');
-            var findShowTitle = obj.parents('.vg_wrapper').find('.show_title');
+            
             if(options.hyperlink){
                 if(link != ""){
                     findShowTitle.html('<a href="'+link+'">'+titlePic+'</a>');
@@ -287,15 +290,15 @@
             var splitClass = tnClass.split(" ");
             var idx = splitClass[0].replace("idx_","");
             if(options.hyperlink){
-                var link_tn = $(this).attr('href');
+                var linkTn = $(this).attr('href');
             }
             if(options.show_title){  
                 var titlePicTn = $(this).find('img').attr('alt');
                 obj.parents('.vg_wrapper').find('.show_title').fadeOut('slow', function(){
-                    obj.parents('.vg_wrapper').find('.show_title').empty();
+                    findShowTitle.empty();
                     if(options.hyperlink){
-                        if(link_tn != ""){
-                            findShowTitle.html('<a href="'+link_tn+'">'+titlePicTn+'</a>');
+                        if(linkTn != ""){
+                            findShowTitle.html('<a href="'+linkTn+'">'+titlePicTn+'</a>');
                         }else{
                             findShowTitle.html(titlePicTn);
                         }
@@ -307,13 +310,13 @@
             }
             
             vglargePic.fadeOut('slow',function(){
-                obj.parents('.vg_wrapper').find('.large_image').detach();
-                if(link_tn !="" && link_tn != undefined){
+                findLarge = $('#'+objId+'_wrap').find('.large_image');
+                if(linkTn !="" && linkTn != undefined){
                     if(options.link_next_image){
                         obj.parents('.vg_wrapper').find('#to_next').detach();
                     }
                     if($('#'+objId+'wrap').find('.large_image').size <= 0){
-                        vglargePic.append('<a href="'+link_tn+'" '+nextId+'><img src="'+largePic+'" id="large_image_'+objId+'" alt="large_image" class="idx_'+idx+' large_image" /></a>'); 
+                        vglargePic.append('<a href="'+linkTn+'" '+nextId+'><img src="'+largePic+'" id="large_image_'+objId+'" alt="large_image" class="idx_'+idx+' large_image" /></a>'); 
                     }
                     
                 } else{
@@ -322,17 +325,16 @@
                             vglargePic.append('<a href="/" id="to_next"><img src="'+largePic+'" id="large_image_'+objId+'" alt="large_image" class="idx_'+idx+' large_image" /></a>'); 
                         }
                     }else{
-                        if($('#'+objId+'wrap').find('.large_image').size <= 0){
-                            vglargePic.append('<img src="'+largePic+'" id="large_image_'+objId+'" alt="large_image" class="idx_'+idx+'" />'); 
-                        }
+                            findLarge.attr('src', largePic+"?v="+(new Date()).getTime());
+                            //vglargePic.append('<img src="'+largePic+'" id="large_image_'+objId+'" alt="large_image" class="idx_'+idx+'" />'); 
                     }  
                 }
                 vglargePic.fadeIn('slow',function(){
                     if(options.zoom){
                         if(options.zoomtype == "inner"){
-                            innerZoom(largePic, zoomPic, idx);
+                            innerZoom(largePic, zoomPic+"?v="+(new Date()).getTime(), idx);
                         }else if(options.zoomtype == "outer"){
-                            outerZoom(largePic, zoomPic, idx);
+                            outerZoom(largePic, zoomPic+"?v="+(new Date()).getTime(), idx);
                         }
                     }
                 }); 
@@ -399,31 +401,30 @@
         
         //inner zoom function with elevate zoom
           var innerZoom = function(largePic, zoomPic, class_image) {
-            findLarge.detach();
-            if(findLarge.size() <= 0){
-                vglargePic.append('<img src="'+largePic+'" data-zoom-image="'+zoomPic+'" id="large_image_'+objId+'" class="idx_'+class_image+' large_image" alt="large_image" />');
-            }
-            
-            findLarge.elevateZoom({
-                zoomType: "inner",
-                cursor: "crosshair",
-                zoomWindowWidth:300, 
-                zoomWindowHeight:100
-            });
+              $('.zoomContainer').remove();
+              var findLarge = $('#'+objId+'_wrap').find('.large_image');
+               findLarge.removeAttr('data-zoom-image');
+               findLarge.attr('data-zoom-image', zoomPic);
+               findLarge.data('zoom-image', zoomPic).elevateZoom({
+                   zoomType: "inner",
+                   cursor: "crosshair",
+                   zoomWindowWidth:300, 
+                   zoomWindowHeight:100
+               });
           }
           
           //outer zoom function with elevate zoom
         var outerZoom = function(largePic, zoomPic, class_image){ 
-            findLarge.detach();
-            if(findLarge.size() <= 0){
-                vglargePic.append('<img src="'+largePic+'" data-zoom-image="'+zoomPic+'" id="large_image_'+objId+'" class="idx_'+class_image+' large_image" alt="large_image" />');
-            }
-            findLarge.elevateZoom({
-                zoomWindowWidth:340,
-                zoomWindowHeight:500,
-                borderSize: 0, 
-                zoomType: "inner"
-            });
+            $('.zoomContainer').remove();
+                var findLarge = $('#'+objId+'_wrap').find('.large_image');
+                findLarge.removeAttr('data-zoom-image');
+                findLarge.attr('data-zoom-image', zoomPic);
+                findLarge.data('zoom-image', zoomPic).elevateZoom({
+                    zoomWindowWidth:340,
+                    zoomWindowHeight:500,
+                    borderSize: 0, 
+                    zoomType: "outer"
+                });
           }
           
           //zoom hovering for first image

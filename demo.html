@@ -7,8 +7,40 @@ and open the template in the editor.
     <head>
         <title></title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script type="text/javascript" src="js/jquery.1.9.1.js"></script>
+        <script type="text/javascript" src="js/jquery.elevateZoom-2.5.5.min.js"></script>
+        <script type="text/javascript" src="js/vigallery.js"></script>
+        <link rel="stylesheet" href="css/vigallery.css" charset="utf-8"/>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#products_details_gallery').ViGallery({
+                    scroll : 'vertical',
+                    thumbnail : 4,
+                    speed : 800,
+                    zoomtype: "inner",
+                    scroll_type : 'scroll',
+                    large_picture_position:'top'
+                });
+            });
+        </script>
     </head>
     <body>
-        <div>TODO write content</div>
+        <div class="product-gallery">
+              <ul id="products_details_gallery" class="clearfix">
+                  <li><a href="/" data-full="images/product_a_full.jpg" data-zoom="images/product_a_zoom.jpg" rel="red"><img src="images/product_a_tn.jpg"/></a></li>
+                  <li><a href="/" data-full="images/product_b_full.jpg" data-zoom="images/product_b_zoom.jpg" rel="light green"><img src="images/product_b_tn.jpg"/></a></li>
+                  <li><a href="/" data-full="images/product_c_full.jpg" data-zoom="images/product_c_zoom.jpg" rel="normal"><img src="images/product_c_tn.jpg"/></a></li>
+                  <li><a href="/" data-full="images/product_a_full.jpg" data-zoom="images/product_a_zoom.jpg" rel="red"><img src="images/product_a_tn.jpg"/></a></li>
+                  <li><a href="/" data-full="images/product_b_full.jpg" data-zoom="images/product_b_zoom.jpg" rel="light green"><img src="images/product_b_tn.jpg"/></a></li>
+                  <li><a href="/" data-full="images/product_c_full.jpg" data-zoom="images/product_c_zoom.jpg" rel="normal"><img src="images/product_c_tn.jpg"/></a></li>
+                  <li><a href="/" data-full="images/product_a_full.jpg" data-zoom="images/product_a_zoom.jpg" rel="red"><img src="images/product_a_tn.jpg"/></a></li>
+                  <li><a href="/" data-full="images/product_b_full.jpg" data-zoom="images/product_b_zoom.jpg" rel="light green"><img src="images/product_b_tn.jpg"/></a></li>
+                  <li><a href="/" data-full="images/product_c_full.jpg" data-zoom="images/product_c_zoom.jpg" rel="normal"><img src="images/product_c_tn.jpg"/></a></li>
+                  <li><a href="/" data-full="images/product_a_full.jpg" data-zoom="images/product_a_zoom.jpg" rel="red"><img src="images/product_a_tn.jpg"/></a></li>
+                  <li><a href="/" data-full="images/product_b_full.jpg" data-zoom="images/product_b_zoom.jpg" rel="light green"><img src="images/product_b_tn.jpg"/></a></li>
+                  <li><a href="/" data-full="images/product_c_full.jpg" data-zoom="images/product_c_zoom.jpg" rel="normal"><img src="images/product_c_tn.jpg"/></a></li>
+              </ul>
+         </div>
+
     </body>
 </html>
